@@ -1,0 +1,4 @@
+skk12695_db_user
+IuNWC9OKXm8G9knj
+
+mongodb+srv://skk12695_db_user:IuNWC9OKXm8G9knj@nodepractisecluster.iigb2qp.mongodb.net/
