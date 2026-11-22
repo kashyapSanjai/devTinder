@@ -45,19 +45,10 @@ jobs:
             cd /home/ubuntu/devTinder
 
             echo "Pulling latest code..."
-            git fetch origin main
-            git reset --hard origin/main
+            git pull
+            
 
-            echo "Installing production dependencies..."
-            npm ci --omit=dev
-
-            echo "Restarting application..."
-
-            if pm2 describe devTinder >/dev/null 2>&1; then
-              pm2 reload devTinder --update-env
-            else
-              pm2 start npm --name devTinder -- start
-            fi
+            pm2 reload devTinder
 
             pm2 save
 
