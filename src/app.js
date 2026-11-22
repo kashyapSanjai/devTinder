@@ -33,6 +33,13 @@ app.use('/', profileRouter)
 app.use('/', requestRouter)
 app.use('/', userRouter)
 
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "OK",
+        message: "Backend is running"
+    });
+});
+
 connectDb()
     .then(() => {
         console.log("Database connection established successfully");
