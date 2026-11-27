@@ -55,28 +55,27 @@ jobs:
           rm -f /tmp/deploy_key
 
       # 5. Deploy to EC2
-      
-  - name: Deploy to EC2
-    uses: appleboy/ssh-action@v1
-    with:
-      host: ${{ secrets.EC2_HOST }}
-      username: ${{ secrets.EC2_USER }}
-      key: ${{ secrets.EC2_SSH_KEY }}
-      script: |
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
-        cd /home/ubuntu/devTinder
+            cd /home/ubuntu/devTinder
 
-        node -v
-        npm -v
-        pm2 -v
+            node -v
+            npm -v
+            pm2 -v
 
-        git fetch origin main
-        git reset --hard origin/main
+            git fetch origin main
+            git reset --hard origin/main
 
-        npm ci --omit=dev
+            npm ci --omit=dev
 
-        pm2 reload devTinder --update-env
-        pm2 save
+            pm2 reload devTinder --update-env
+            pm2 save
 
