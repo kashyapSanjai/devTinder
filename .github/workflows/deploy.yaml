@@ -32,6 +32,28 @@ jobs:
       # - name: Run tests
       #   run: npm test --if-present
 
+
+      - name: Validate SSH secret
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          printf '%s' "$SSH_PRIVATE_KEY" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+
+          echo "Checking SSH key format..."
+
+          head -n 1 /tmp/deploy_key
+          tail -n 1 /tmp/deploy_key
+
+          if ssh-keygen -y -f /tmp/deploy_key > /dev/null 2>&1; then
+            echo "SSH key is valid and readable."
+          else
+            echo "SSH key is INVALID or unreadable."
+            exit 1
+          fi
+
+          rm -f /tmp/deploy_key
+
       # 5. Deploy to EC2
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1
